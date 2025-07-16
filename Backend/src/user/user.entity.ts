@@ -8,10 +8,10 @@ export enum UserRole {
 }
 
 @Entity()
-export class User {
+export class UserRepository {
 
     @PrimaryGeneratedColumn()
-    id : number;
+    id : string;
 
     @Column()
     name : string;
@@ -43,4 +43,7 @@ export class User {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @Column({ nullable: true })
+    hashedRefreshToken: string;
 } 
