@@ -1,8 +1,8 @@
-import { BadRequestException, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Controller('auth')
 export class AuthController {
@@ -13,8 +13,9 @@ export class AuthController {
     ){}
 
     @Post("/register")
-    async register(dto : RegisterDto){
-        if(!await this.authService.emailExist(dto.email)){
+    async register(@Body() dto : RegisterDto){
+        // console.log(dto);
+        if(await this.authService.isEmailExist(dto.email)){
             throw new BadRequestException("Email Already Exisit");
         }
         const passwordHash = await this.authService.hashPassword(dto.password);
@@ -24,8 +25,11 @@ export class AuthController {
 
     }
 
-    async login(dto : LoginDto) {
+    @Post("/login")
+    async login(@Body() dto : LoginDto) {
+        console.log(dto);
         const user = await this.authService.validateUser(dto.email,dto.password);
+        console.log(user);
         if(!user){
             throw new UnauthorizedException("Creadential Not Correct");
         }

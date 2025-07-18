@@ -6,6 +6,16 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TenantsModule } from './tenant/tenant.module';
+import { SubscriptionController } from './subscription/subscription.controller';
+import { SubscriptionService } from './subscription/subscription.service';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { PlanModule } from './plan/plan.module';
+import { OrganizationController } from './organization/organization.controller';
+import { OrganizationModule } from './organization/organization.module';
+import { RoleService } from './role/role.service';
+import { RoleModule } from './role/role.module';
+import { BillingModule } from './billing/billing.module';
 
 @Module({
   imports: [
@@ -33,8 +43,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         },
       }),
     }),
+    TenantsModule,
+    SubscriptionModule,
+    PlanModule,
+    OrganizationModule,
+    RoleModule,
+    BillingModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService],
+  controllers: [AppController, AuthController, SubscriptionController, OrganizationController],
+  providers: [AppService, SubscriptionService, RoleService],
 })
 export class AppModule {}

@@ -1,13 +1,9 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
 import { ConfigService } from '@nestjs/config';
-import { UserService } from 'src/user/user.service';
-import { UserRepository } from 'src/user/user.entity';
+import { UserService } from '../user/user.service';
+import { UserRepository } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -17,8 +13,8 @@ export class AuthService {
         private configService: ConfigService,
     ){}
 
-    async emailExist(email : string) : Promise<boolean> {
-        return this.userService.emailExist(email);
+    async isEmailExist(email : string) : Promise<boolean> {
+        return await this.userService.isEmailExist(email);
     }
     
     async validateUser(email : string, password : string) : Promise<any> {

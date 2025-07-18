@@ -15,10 +15,11 @@ export class UserService {
         return user;
     } 
 
-    async emailExist(email : string) : Promise<boolean> {
+    async isEmailExist(email : string) : Promise<boolean> {
         const user = await this.userRepository.findOne({where : {email}});
-        if(user) return true;
-        else return false;
+        // console.log(user);       
+        if(!user) return false;
+        else return true;
     }
     async saveUser(name :string, email:string, password : string) : Promise<UserRepository> {
         const user = this.userRepository.create({

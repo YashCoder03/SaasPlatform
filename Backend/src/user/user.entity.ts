@@ -1,4 +1,6 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm"
+import { OrganizationRepository } from "src/organization/organization.entity";
+import { RoleRepository } from "src/role/role.entity";
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm"
 
 
 export enum UserRole {
@@ -25,13 +27,6 @@ export class UserRepository {
     @Column({nullable : true})
     profilePic : string;
 
-    @Column({
-        type: 'enum',
-        enum: UserRole,
-        default: UserRole.MEMBER,
-    })
-    role : UserRole;
-
     @Column({ default: true })
     isActive: boolean;
 
@@ -46,4 +41,10 @@ export class UserRepository {
 
     @Column({ nullable: true })
     hashedRefreshToken: string;
+
+    @ManyToOne(() => OrganizationRepository, (org) => org.user)
+    organization: OrganizationRepository;
+
+    @ManyToOne(() => RoleRepository, (role) => role.users)
+    role: RoleRepository;
 } 
